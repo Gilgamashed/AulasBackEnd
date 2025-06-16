@@ -1,0 +1,10 @@
+criando a pasta é só criar um new -> html file
+nome: templates/app*nome do app*/*nome do html*.html
+
+# python manage.py runserver  <-- para rodar o server
+
+abstrato vs fisico
+
+caracteristicas do python - models.py guarda todos os models, é bom por ser facil de achar mas é um pentelho de usar
+
+python manage.py makemigrations depois de adicionar os models
