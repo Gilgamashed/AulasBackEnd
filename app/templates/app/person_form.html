@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if person %}Edição{% else %}Cadastro{% endif %} de Pessoas</title>
+</head>
+<body>
+    <h1>{% if person %}Edição{% else %}Cadastro{% endif %} de Pessoas</h1>
+
+    <form method="post"> <!-- não aceita PUT, PATCH, DELETE -->
+      {% csrf_token %}
+      <label for="name">Nome</label>
+      <input type="text" id="name" name="name" value="{{ person.name|default:'' }}" required><br><br>
+
+      <label for="age">Idade</label>
+      <input type="number" id="age" name="age" value="{{ person.age|default:'' }}" required><br><br>
+
+      <button type="submit">Cadastrar</button>
+
+    </form>
+<p><a href="{% url 'people' %}">Voltar para a listagem de pessoas.</a></p>
+</body>
+</html>
