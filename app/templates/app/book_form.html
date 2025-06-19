@@ -2,28 +2,28 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastramento de Livros</title>
+    <title>{% if book %}Edição{% else %}Cadastro{% endif %} de Livros</title>
 </head>
 <body>
-    <h1>Cadastramento de Livro</h1>
+    <h1>{% if book %}Edição{% else %}Cadastro{% endif %} de Livro</h1>
 
-    <form method="post">
+    <form method="post"> <!-- não aceita PUT, PATCH, DELETE -->
       {% csrf_token %}
       <label for="title">Título</label>
-      <input type="text" id="title" name="title" required><br><br>
+      <input type="text" id="title" name="title" value="{{ book.title|default:'' }}" required><br><br>
 
       <label for="author">Autor</label>
-      <input type="text" id="author" name="author" required><br><br>
+      <input type="text" id="author" name="author" value="{{ book.author|default:'' }}" required><br><br>
 
       <label for="pages">Páginas</label>
-      <input type="text" id="pages" name="pages" required><br><br>
+      <input type="text" id="pages" name="pages" value="{{ book.pages|default:'' }}" required><br><br>
 
       <label for="published_date">Data de publicação (YYYY-MM-DD)</label>
-      <input type="text" id="published_date" name="published_date" required><br><br>
+      <input type="text" id="published_date" name="published_date" value="{{ book.published_date|default:'' }}" required><br><br>
 
       <button type="submit">Cadastrar</button>
 
     </form>
-<p><a href="{% url 'books' %}">Voltar para a listagem de livros</a></p>
+<p><a href="{% url 'book_list' %}">Voltar para a listagem de livros</a></p>
 </body>
 </html>

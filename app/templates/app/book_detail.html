@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do livro {{ title.title }}</title>
+</head>
+<body>
+      <h1>Detalhes do livro {{title.title}} </h1>
+      <p><strong>Autor:</strong> "{{book.author}}"</p>
+      <p><strong>Páginas:</strong> "{{book.pages}}"</p>
+      <p><strong>Publicado em:</strong> "{{book.published_date}}"</p>
+      <a href="{% url 'book_list' %}">Voltar à lista</a>
+</body>
+</html>

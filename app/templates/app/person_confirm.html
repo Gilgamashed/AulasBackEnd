@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar exclusão</title>
+</head>
+<body>
+  <h1>Confirmar exclusão</h1>
+  <p>Tem certeza que deseja excluir o cadastro de "{{person.name}}"?</p>
+  <form method="post" >
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('Deseja continuar? Essa ação não terá volta.')"> Confirmar</button> <a href="{% url 'people' %}">Cancelar</a>
+  </form>
+</body>
+</html>
