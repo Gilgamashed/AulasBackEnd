@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if tarefa %}Edição{% else %}Cadastro{% endif %} de Tarefas</title>
+</head>
+<body>
+    <h1>{% if tarefa %}Edição{% else %}Cadastro{% endif %} de Tarefas</h1>
+
+    <form id="tarefa-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if tarefa %} Atualizar {% else %} Cadastrar {% endif %}</button>
+    </form>
+
+<p><a href="{% url 'tarefa_list' %}">Voltar para a lista de tarefas</a></p>
+</body>

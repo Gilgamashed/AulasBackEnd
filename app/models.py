@@ -23,5 +23,22 @@ class Book(models.Model):
                 f"published_date" : "{self.published_date}",
                 }}""")
 
+class Chore(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    due_date = models.DateField()
+    done = models.BooleanField()
+
+    def __str__(self):
+        return (f"""{{'
+                f"title" : "{self.title}",
+                f"description" : "{self.description}",
+                f"due_date" : "{self.due_date}",
+                f"done" : "{self.done}",
+                }}""")
+
+
+
+
 
 # Create your models here.

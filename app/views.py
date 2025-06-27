@@ -11,8 +11,9 @@ import socket
 
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from app.forms import BookForm
-from app.models import Person, Book
+from app.forms import BookForm, ChoreForm, ContactForm
+from app.mixins import JsonableResponseMixin
+from app.models import Person, Book, Chore
 
 
 #FBV? - CBV?
@@ -100,12 +101,28 @@ class BookCreateView(CreateView):
     template_name = "app/book_form.html"
     success_url = reverse_lazy('book_list') #redireciona após cadastro
 
-class BookUpdateView(UpdateView):       #pesquisar uma forma mais clean
+class BookUpdateView(JsonableResponseMixin,UpdateView):       #pesquisar uma forma mais clean
     model = Book
     form_class = BookForm
     template_name = "app/book_form.html"
     pk_url_kwarg = "book_id"
     success_url = reverse_lazy('book_list')
+
+    def put(self, request, *args, **kwargs):
+        self.object= self.get_object()
+        try:
+            body = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Json Invalid'}, status=400)
+        #Monta os kwargs com os dados e instancia
+        kwargs = self.get_form_kwargs()
+        kwargs['data'] = body
+        kwargs['instance'] = self.object
+
+        form = self.get_form(**kwargs)
+        if form.is_valid():
+            return self.form_valid(form)
+        return self.form_invalid(form)
 
 """    def put(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -180,6 +197,71 @@ def book_delete(request, book_id):
     return render (request,"app/book_confirm.html",{"book":book})
 
 """
+
+#---------------------------------------------------------------------------------
+
+class ChoreListView(ListView):
+    model = Chore
+    template_name = "app/tarefa_list.html"
+    context_object_name = "tarefas"
+
+class ChoreCreateView(CreateView):
+    model = Chore
+    form_class  = ChoreForm
+    template_name = "app/tarefa_form.html"
+    success_url = reverse_lazy('tarefa_list')
+
+class ChoreGetView(DetailView):
+    model = Chore
+    template_name = "app/tarefa_detail.html"
+    context_object_name = "tarefa"
+    pk_url_kwarg = "tarefa_id"
+
+class ChoreDeleteView(DeleteView):
+    model = Chore
+    template_name = "app/tarefa_confirm.html"
+    pk_url_kwarg = "tarefa_id"
+    success_url = reverse_lazy('tarefa_list')
+
+class ChoreUpdateView(JsonableResponseMixin,UpdateView):       #pesquisar uma forma mais clean
+    model = Chore
+    form_class = ChoreForm
+    template_name = "app/tarefa_form.html"
+    pk_url_kwarg = "tarefa_id"
+    success_url = reverse_lazy('tarefa_list')
+
+    def put(self, request, *args, **kwargs):
+        self.object= self.get_object()
+        try:
+            body = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Json Invalid'}, status=400)
+        #Monta os kwargs com os dados e instancia
+        kwargs = self.get_form_kwargs()
+        kwargs['data'] = body
+        kwargs['instance'] = self.object
+
+        form = self.get_form(**kwargs)
+        if form.is_valid():
+            return self.form_valid(form)
+        return self.form_invalid(form)
+
+
+#-------------------------------------------------------------------------------------------------------
+
+def contact_view(request):
+    form = ContactForm(request.POST or None)
+
+    if form.is_valid():                         #valida se os campos foram preenchidos
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        message = form.cleaned_data['message']
+
+        context = {"success": True, 'name':name}
+
+        return render(request,'app/contact.html',context)
+    return render(request,'app/contact.html', {'form':form})    #Se for GET ele cai aqui
+
 
 # esse arquivo gerencia as funções do app
 # python manage.py runserver  <-- para rodar o server

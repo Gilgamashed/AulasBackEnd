@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes da Tarefa {{ tarefa.title }}</title>
+</head>
+<body>
+      <h1>Detalhes da Tarefa {{tarefa.title}} </h1>
+      <p><strong>Titulo:</strong> "{{tarefa.title}}"</p>
+      <p><strong>Descrição:</strong> "{{tarefa.description}}"</p>
+      <p><strong>Conclusão para:</strong> "{{tarefa.due_date}}"</p>
+      <p><strong>Status:</strong> "{{tarefa.done}}"</p>
+      <a href="{% url 'tarefa_list' %}">Voltar à lista</a>
+</body>
+</html>

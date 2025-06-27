@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Tarefas</title>
+</head>
+<body>
+    <h1>Lista de Atividades</h1>
+    <ul>
+        {% for tarefa in tarefas %}
+            <li>{{tarefa.title}} - {{tarefa.description}} - {{tarefa.due_date}} - {{tarefa.done}} - <a href="/tarefa/{{tarefa.id}}" >Status</a> - <a href="/tarefa/edit/{{tarefa.id}}" >editar</a> - <a href="/tarefa/delete/{{tarefa.id}}" >excluir</a> </li>
+        {% empty %}
+            <li>Nenhuma tarefa cadastrada!</li>
+        {% endfor %}
+
+    </ul>
+</body>
+</html>

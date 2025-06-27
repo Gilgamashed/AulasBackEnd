@@ -19,8 +19,10 @@ from django.contrib import admin
 from django.urls import path
 
 from app import views
-from app.views import BaseHelloView, ServerInfoView, WelcomeView, PeopleView, person_create, person_update, person_delete, BooklistView, BookCreateView, BookGetView, \
-    BookUpdateView, BookDeleteView, BookListJsonView
+from app.views import BaseHelloView, ServerInfoView, WelcomeView, PeopleView, person_create, person_update, \
+    person_delete, BooklistView, BookCreateView, BookGetView, \
+    BookUpdateView, BookDeleteView, BookListJsonView, ChoreListView, ChoreCreateView, ChoreGetView, ChoreDeleteView, \
+    ChoreUpdateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -39,6 +41,12 @@ urlpatterns = [
     path("book/<int:book_id>", BookGetView.as_view(), name='book_detail'),
     path("book/delete/<int:book_id>", BookDeleteView.as_view(), name='book_delete'),
     path("book/edit/<int:book_id>", BookUpdateView.as_view(), name="book_update"),
+
+    path("tarefa", ChoreListView.as_view(), name='tarefa_list'),
+    path("tarefa/add", ChoreCreateView.as_view(), name='tarefa_add'),
+    path("tarefa/<int:tarefa_id>", ChoreGetView.as_view(), name='tarefa_detail'),
+    path("tarefa/delete/<int:tarefa_id>", ChoreDeleteView.as_view(), name='tarefa_delete'),
+    path("tarefa/edit/<int:tarefa_id>", ChoreUpdateView.as_view(), name="tarefa_update"),
 
 ]
 

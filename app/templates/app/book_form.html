@@ -10,26 +10,26 @@
     <form id="book-form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">{% if book %} Atualizar {% else %} Cadastrar{% endif %}</button>
+        <button type="submit">{% if book %} Atualizar {% else %} Cadastrar {% endif %}</button>
     </form>
 
 <p><a href="{% url 'book_list' %}">Voltar para a listagem de livros</a></p>
 </body>
 
 {% if book %}
-<script>
+<script defer>
 
         document.getElementById('book-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = e.target;
             const data = new FormData(form);
-            const jsonData = Object.formEntries(data.entries());
+            const jsonData = Object.fromEntries(data.entries());
 
             fetch(window.location.href, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
-                    'X-CSRFToken': {{ csrf_token }}
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
                 },
                 body: JSON.stringify(jsonData)
             })
