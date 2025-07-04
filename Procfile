@@ -1,1 +1,1 @@
-web: gunicorn aula18_project.wsgi
+web: gunicorn config.wsgi
