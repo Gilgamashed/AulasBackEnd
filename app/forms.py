@@ -1,4 +1,6 @@
 from django import forms
+from django.core.validators import FileExtensionValidator, MaxValueValidator
+
 from .models import Book, Chore
 
 
@@ -48,3 +50,4 @@ class ContactForm(forms.Form):
     name = forms.CharField(label="Seu nome", max_length=100)
     email = forms.EmailField(label="E-mail")
     message = forms.CharField(label="Mensagem", widget=forms.Textarea)
+    attachment = forms.FileField(label="Anexo", required=False)

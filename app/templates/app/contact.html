@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Contato</title>
+</head>
+<body>
+   {% if success %}
+        <p> Obrigado {{ name }}! Seu contato é muito valioso para nós!</p>
+   {% else %}
+  <h1>Deixe sua mensagem</h1>
+  <form method="post" enctype="multipart/form-data">
+   {% csrf_token %}
+   {{ form.as_div }}
+    <button type="submit">Enviar</button>
+  </form>
+    {% endif %}
+</body>
+</html>
