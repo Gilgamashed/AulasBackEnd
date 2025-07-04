@@ -2,8 +2,11 @@ import json
 import os.path
 import smtplib
 import ssl
+from datetime import datetime
 
 import certifi
+import cloudinary
+import cloudinary.uploader
 from django.core.files.storage import default_storage
 from django.core.mail import send_mail, get_connection, EmailMessage
 from django.shortcuts import render, redirect, get_object_or_404
@@ -266,24 +269,26 @@ def contact_view(request):
         email = form.cleaned_data['email']
         message = form.cleaned_data['message']
         file = form.cleaned_data.get('attachment')
+        date_suffix = datetime.now().strftime('%Y_%m_%d')
+        filename = f'{os.path.splitext(file.name)[0]}_{date_suffix}'
 
+        #if file:
+        upload_result = cloudinary.uploader.upload(file= file,
+                                                   asset_folder='uploads',
+                                                   public_id=filename,
+                                                   override=True,
+                                                   resource_type='raw',
+                                                   )
+
+
+        message_body = message + f'\n\nFaça o download em: {upload_result["secure_url"]}'
         email_message = EmailMessage(
             subject=f'Contato de {name}',
-            body=message,
+            body=message_body,
             from_email=email,
             to=['projeto.minstrel@gmail.com'],
             reply_to=[email],
         )
-
-        if file:
-            if file.size > 5 * 1024 * 1024:
-                raise ValueError("O arquivo é muito grande. O tamanho máximo é 5MB.")
-            file_name = default_storage.save(f'uploads/{file.name}', file)
-            file.seek(0)        #o .save acima leva o "ponteiro" pro fim do arquivo e envia só o fim dele.
-                                #esse file.seek(0) leva o "ponteiro" pro começo do arquivo novamente.
-
-            content_type = file.content_type
-            email_message.attach(file.name, file.read(), content_type)
 
         email_message.send()
 
